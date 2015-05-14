@@ -2,3 +2,4 @@ expr_evaluator.vcxproj
 expr_evaluator.vcxproj.filters
 expr_evaluator.vcxproj.user
 Debug/
+Release/
