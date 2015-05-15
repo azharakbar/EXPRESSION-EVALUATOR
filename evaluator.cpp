@@ -92,10 +92,12 @@ extern double evaluator ( char expr[] )
 				else if ( A[top].opcode == 3 ) result *= A[top--].operand ;
 				else if ( A[top].opcode == 4 ) result /= A[top--].operand ;
 			}
+			if ( !result ) result = temp ;
 			temp = 0 ;
 		}
 		++i ;
 	}
 
+	
 	return result ;
 }
