@@ -8,7 +8,7 @@ using namespace std ;
 
 extern int para_match_test ( char expr[] ) ;
 extern void space_remove ( char expr [] ) ;
-extern int  evaluator ( char expr [] , int&  i , int& result );
+extern int  evaluator ( char expr [] );
 
 void main ()
 {
@@ -41,7 +41,7 @@ void main ()
 
 	int j = 0 ;
 	int opcode = 0 ;
-	result = evaluator ( expr , j , result ) ;
+	result = evaluator ( expr ) ;
 
 	cout << endl << " >> The Result = " << result ;
 

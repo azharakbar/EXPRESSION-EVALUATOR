@@ -5,75 +5,84 @@
 
 using namespace std ;
 
-int get_number ( char expr[] , int& i , int &result , int opcode )
+struct stack 
 {
-	char temp[50] = "" ;
-	int j = 0 ;
+	int operand ;
+	int opcode ;
+};
 
-	while ( isdigit ( expr[i] ) )
-		temp[j++] = expr[i++] ;
+stack A[100] ;
+int top = -1 ;
 
-	temp[j] = '\0' ;
-
-	if ( opcode == 1 )      result += atoi (temp) ;
-	else if ( opcode == 2 ) result -= atoi (temp) ;
-	else if ( opcode == 3 ) result *= atoi (temp) ;
-	else if ( opcode == 4 ) result /= atoi (temp) ;
-	else if ( !opcode )     result  = atoi (temp) ;
-
-	cout << endl << " ** I AM INSIDE GETNUM FUNCTION ** ";
-	cout << endl << " >> I UPDATED i as : "<< i ;
-	cout << endl << " >> I UPDATED result as : " << result ;
-	cout << endl << " >> I UPDATED opcode as : " << opcode ;
-	getchar () ;
-
-	return result ;
-
-}
-
-extern int evaluator ( char expr[] , int& i , int &result  )
+extern int evaluator ( char expr[] )
 {
-	int opcode =  0 ;
-	char op = NULL ;
-	
-	while ( expr[i] != ')' && expr[i] != '\0' )
+	int result = 0 , i = 0 , opcode = 0 , temp = 0 ;
+
+	while ( expr[i] != '\0' )
 	{
-		cout << endl << " I AM INSIDE THE LOOP AND NOW expr["<<i<<"] = "<<expr[i] ;
-		getchar (); 
-		if ( expr[i] == '(' )
+		cout << endl << " NOW I AM DEALING WITH " << expr[i] ;
+		if ( expr[i] >= 48 && expr[i] <= 57 )
 		{
-			++i ;
-			result = evaluator ( expr , i , result ) ;
-			if ( expr[i+1] != ')' && expr[i+1] != '\0')
-			{
-				op = expr [i++] ;
-				cout<<endl<< " I GOT THE OP = " <<op ;
-			}
-			else
-				return result ;
+			cout << endl << " I AM IN CONDITION 1 " ;
+			temp = ( temp *10 ) + ( (int)(expr[i]) - 48 ) ;
 		}
 
-		if ( expr[i] != '(' )
+		else if ( expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/' )
 		{
-			result = get_number ( expr , i , result , opcode ) ;
-			cout << endl << "value of i = " << i ;
-			getchar () ;
-
-			if ( expr[i+1] != ')' && expr[i+1] != '\0')
-			{
-				op = expr [i++] ;
-
-				if ( op == '+' ) opcode = 1 ;
-				else if ( op == '-' ) opcode = 2 ;
-				else if ( op == '*' ) opcode = 3 ;
-				else if ( op == '/' ) opcode = 4 ;
-				else if ( op == NULL ) opcode = 0 ;
-			}
+			cout << endl << " I AM IN CONDITION 2 " ;
+			if ( !result )
+				result = temp ;
 			else
-				return result ;
+			{
+				if ( opcode == 1 ) result += temp ;
+				else if ( opcode == 2 ) result -= temp ;
+				else if ( opcode == 3 ) result *= temp ;
+				else if ( opcode == 4 ) result /= temp ;
+			}
+
+			temp = 0 ;
+			if ( expr [i] == '+' ) opcode = 1 ;
+			else if ( expr [i] == '-' ) opcode = 2 ;
+			else if ( expr [i] == '*' ) opcode = 3 ;
+			else if ( expr [i] == '/' ) opcode = 4 ;
 		}
 
+		else if ( expr[i] == '(' )
+		{
+			cout << endl << " I AM IN CONDITION 3 " ;
+			if ( i && result )
+			{
+				cout << endl << " I AM PUSHING " ;
+				A[++top].operand = result ;
+				A[top].opcode = opcode ;
+				result = temp = opcode = 0 ;
+			}
+		}
+
+		else if ( expr[i] == ')' )
+		{
+			cout << endl << " I AM IN CONDITION 4 " ;
+				if ( opcode == 1 ) result += temp ;
+				else if ( opcode == 2 ) result -= temp ;
+				else if ( opcode == 3 ) result = result * temp ;
+				else if ( opcode == 4 ) result /= temp ;
+				opcode = 0 ;
+			if ( top != -1 )
+			{
+				cout << endl << " I AM POPPING " ;
+				if ( A[top].opcode == 1 ) result += A[top--].operand ;
+				else if ( A[top].opcode == 2 ) result -= A[top--].operand ;
+				else if ( A[top].opcode == 3 ) result *= A[top--].operand ;
+				else if ( A[top].opcode == 4 ) result /= A[top--].operand ;
+			}
+			temp = 0 ;
+		}
+
+		cout << endl << " AT THE END .... VALUE OF result = " << result << " AND temp = " << temp ; 
+
+		getchar();
+		++i ;
 	}
-	
+
 	return result ;
 }
