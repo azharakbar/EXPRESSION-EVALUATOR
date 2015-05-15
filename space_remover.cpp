@@ -14,4 +14,14 @@ extern void space_remove ( char expr [] )
 			}
 		}
 	}
+
+	i = 0 ;
+
+	for ( i = 0 ; expr[i] != '\0' ; ++i )
+	{
+		if ( expr[i] == '{' ) expr[i] = '(' ;
+		else if ( expr[i] == '[' ) expr[i] = '(' ;
+		else if ( expr[i] == '}' ) expr[i] = ')' ;
+		else if ( expr[i] == ']' ) expr[i] = ')' ;
+	}
 }
