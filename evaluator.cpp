@@ -7,26 +7,42 @@ using namespace std ;
 
 struct stack 
 {
-	int operand ;
+	double operand ;
 	int opcode ;
 };
 
 stack A[100] ;
 int top = -1 ;
 
-extern int evaluator ( char expr[] )
+extern double evaluator ( char expr[] )
 {
-	int result = 0 , i = 0 , opcode = 0 , temp = 0 ;
+	double result = 0 ,  temp = 0 ;
+	int i = 0 , opcode = 0 , dec = -1 , j = 0 , ten = 1 ;
 
 	while ( expr[i] != '\0' )
 	{
-		if ( expr[i] >= 48 && expr[i] <= 57 )
+		if ( (expr[i] >= 48 && expr[i] <= 57) )
 		{
+			if ( dec != -1 ) {  ++dec ; }
 			temp = ( temp *10 ) + ( (int)(expr[i]) - 48 ) ;
+		}
+		
+		else if ( expr[i] == '.' )
+		{
+			dec = 0 ;
 		}
 
 		else if ( expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/' )
 		{
+			if ( dec != -1 )
+			{
+				ten = 1 ;
+				for ( j = 1 ; j <= dec ; ++j )
+					ten = ten*10 ;
+				temp = temp / ten ;
+				dec = -1 ; 
+			}
+			
 			if ( !result )
 				result = temp ;
 			else
@@ -56,6 +72,14 @@ extern int evaluator ( char expr[] )
 
 		else if ( expr[i] == ')' )
 		{
+				if ( dec != -1 )
+				{
+					ten = 1 ;
+					for ( j = 1 ; j <= dec ; ++j )
+						ten = ten*10 ;
+					temp = temp / ten ;
+					dec = 0 ; 
+				}			
 				if ( opcode == 1 ) result += temp ;
 				else if ( opcode == 2 ) result -= temp ;
 				else if ( opcode == 3 ) result = result * temp ;

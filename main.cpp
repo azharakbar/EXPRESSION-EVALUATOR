@@ -8,12 +8,12 @@ using namespace std ;
 
 extern int para_match_test ( char expr[] ) ;
 extern void space_remove ( char expr [] ) ;
-extern int  evaluator ( char expr [] );
+extern double  evaluator ( char expr [] );
 
 void main ()
 {
 	char expr[100] = "" ;
-	int result = 0 ;
+	double result = 0.0 ;
 
 	cout << " >> Enter The Mathematical Expression To Be Evaluated : ";
 	cin.getline ( expr , 100 ) ;
@@ -33,8 +33,6 @@ void main ()
 		exit (0) ;
 	}
 
-	int j = 0 ;
-	int opcode = 0 ;
 	result = evaluator ( expr ) ;
 
 	cout << endl << " >> The Result = " << result ;
