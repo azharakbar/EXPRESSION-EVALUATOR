@@ -33,12 +33,6 @@ void main ()
 		exit (0) ;
 	}
 
-	cout << endl << " >> The Updated Expression Is : " << expr ;
-
-	cout << endl << " >> Each Character Details : " ;
-	for ( int i = 0 ; expr [i] != '\0' ; ++i ) 
-		cout << endl << "expr["<<i<<"] = " << expr[i] ;
-
 	int j = 0 ;
 	int opcode = 0 ;
 	result = evaluator ( expr ) ;
