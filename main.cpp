@@ -12,30 +12,38 @@ extern double  evaluator ( char expr [] );
 
 void main ()
 {
-	char expr[100] = "" ;
+	char expr[100] = "" , temp[100] = "" ;
 	double result = 0.0 ;
 
-	cout << " >> Enter The Mathematical Expression To Be Evaluated : ";
-	cin.getline ( expr , 100 ) ;
-
-	//Enclosing The Entire Expression In ( )
-	char temp[100] = "(";
-	strcat ( temp , expr ) ;
-	strcat ( temp , ")" ) ;
-	strcpy ( expr , temp ) ;
-
-	space_remove ( expr ) ;
-
-	if ( ! para_match_test ( expr ) )
+	do
 	{
-		cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
-		getchar () ;
-		exit (0) ;
-	}
+		cout << "\n\n >> Enter The Mathematical Expression To Be Evaluated : ";
+		cin.getline ( expr , 100 ) ;
 
-	result = evaluator ( expr ) ;
+		if ( !strcmp ( expr,"cnl") ) exit (0) ;
 
-	cout << endl << " >> The Result = " << result ;
+		//Enclosing The Entire Expression In ( )
+		if ( expr[0] == '-' )
+			strcpy ( temp , "(0" ) ;
+		else
+			strcpy ( temp , "(" ) ;
+		strcat ( temp , expr ) ;
+		strcat ( temp , ")" ) ;
+		strcpy ( expr , temp ) ;
+
+		space_remove ( expr ) ;
+
+		if ( ! para_match_test ( expr ) )
+		{
+			cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
+			getchar () ;
+			exit (0) ;
+		}
+
+		result = evaluator ( expr ) ;
+
+		cout << endl << " >> The Result = " << result ;
+	}while (1) ;
 
 	getchar();  
 }

@@ -21,6 +21,7 @@ extern double evaluator ( char expr[] )
 
     while ( expr[i] != '\0' )
     {
+
         if ( (expr[i] >= 48 && expr[i] <= 57) )
         {
             if ( dec != -1 ) {  ++dec ; }
@@ -43,11 +44,11 @@ extern double evaluator ( char expr[] )
                 dec = -1 ; 
             }
             
-            if ( !result )
+            if ( !result && opcode != 2 )
                 result = temp ;
             else
             {
-                if ( opcode == 1 ) result += temp ;
+					 if ( opcode == 1 ) result += temp ;
                 else if ( opcode == 2 ) result -= temp ;
                 else if ( opcode == 3 ) result *= temp ;
                 else if ( opcode == 4 ) result /= temp ;
@@ -58,6 +59,7 @@ extern double evaluator ( char expr[] )
             else if ( expr [i] == '-' ) opcode = 2 ;
             else if ( expr [i] == '*' ) opcode = 3 ;
             else if ( expr [i] == '/' ) opcode = 4 ;
+
         }
 
         else if ( expr[i] == '(' )
@@ -79,18 +81,19 @@ extern double evaluator ( char expr[] )
                         ten = ten*10 ;
                     temp = temp / ten ;
                     dec = 0 ; 
-                }           
+                }
                 if ( opcode == 1 ) result += temp ;
                 else if ( opcode == 2 ) result -= temp ;
                 else if ( opcode == 3 ) result = result * temp ;
                 else if ( opcode == 4 ) result /= temp ;
                 opcode = 0 ;
+
             if ( top != -1 )
             {
                 if ( A[top].opcode == 1 ) result += A[top--].operand ;
 				else if ( A[top].opcode == 2 ) result = A[top--].operand - result ;
                 else if ( A[top].opcode == 3 ) result *= A[top--].operand ;
-                else if ( A[top].opcode == 4 ) result /= A[top--].operand ;
+                else if ( A[top].opcode == 4 ) result = A[top--].operand / result ;
             }
             if ( !result ) result = temp ;
             temp = 0 ;
