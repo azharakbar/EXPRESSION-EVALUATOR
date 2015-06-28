@@ -44,7 +44,7 @@ void main ()
 			cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
 			getchar () ;
 		}
-		a ;
+		
 		result = evaluator ( expr ) ;
 
 		cout << endl << " >> The Result = " << result ;
