@@ -12,7 +12,7 @@ extern double  evaluator ( char expr [] );
 
 void main ()
 {
-	char expr[100] = "" , temp[100] = "" ;
+	char expr[100] = "" , temp[100] = "" , cresult[50] = "" ;
 	double result = 0.0 ;
 
 	do
@@ -20,13 +20,19 @@ void main ()
 		cout << "\n\n >> Enter The Mathematical Expression To Be Evaluated : ";
 		cin.getline ( expr , 100 ) ;
 
-		if ( !strcmp ( expr,"cnl") ) exit (0) ;
+		if ( strstr ( expr,"cnl") ) exit (0) ;
+
+		itoa ( result , cresult , 10 ) ;
 
 		//Enclosing The Entire Expression In ( )
-		if ( expr[0] == '-' )
-			strcpy ( temp , "(0" ) ;
+		if ( expr[0] == '+' || expr[0] == '-' || expr[0] == '/' || expr[0] == '*'  )
+		{
+			strcpy ( temp , "(" );
+			strcat ( temp , cresult ) ;
+		}
 		else
 			strcpy ( temp , "(" ) ;
+
 		strcat ( temp , expr ) ;
 		strcat ( temp , ")" ) ;
 		strcpy ( expr , temp ) ;
@@ -37,7 +43,6 @@ void main ()
 		{
 			cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
 			getchar () ;
-			exit (0) ;
 		}
 
 		result = evaluator ( expr ) ;
