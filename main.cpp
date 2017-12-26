@@ -14,9 +14,8 @@ void main ()
 {
 	char expr[100] = "" , temp[100] = "" , cresult[50] = "" ;
 	double result = 0.0 ;
-
-	do
-	{
+	
+	do{
 		cout << "\n\n >> Enter The Mathematical Expression To Be Evaluated : ";
 		cin.getline ( expr , 100 ) ;
 
@@ -25,13 +24,12 @@ void main ()
 		itoa ( result , cresult , 10 ) ;
 
 		//Enclosing The Entire Expression In ( )
-		if ( expr[0] == '+' || expr[0] == '-' || expr[0] == '/' || expr[0] == '*'  )
-		{
+		if ( expr[0] == '+' || expr[0] == '-' || expr[0] == '/' || expr[0] == '*'  ){
 			strcpy ( temp , "(" );
 			strcat ( temp , cresult ) ;
-		}
-		else
+		} else {
 			strcpy ( temp , "(" ) ;
+		}
 
 		strcat ( temp , expr ) ;
 		strcat ( temp , ")" ) ;
@@ -39,8 +37,7 @@ void main ()
 
 		space_remove ( expr ) ;
 
-		if ( ! para_match_test ( expr ) )
-		{
+		if ( ! para_match_test ( expr ) ) {
 			cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
 			getchar () ;
 		}
