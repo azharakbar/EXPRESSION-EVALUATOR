@@ -3,26 +3,26 @@
 int is_opening ( char ch )
 {
 	if ( ch == '(' || ch == '[' || ch == '{' ) return 1 ;
-	else									   return 0 ;
+	else					   return 0 ;
 }
 
 int is_closing ( char ch )
 {
 	if ( ch == ')' || ch == ']' || ch == '}' ) return 1 ;
-	else									   return 0 ;
+	else					   return 0 ;
 }
 
 char counter ( char ch )
 {
 	if ( ch == ')' ) return '(' ;
-	if ( ch == ']' ) return '[' ;
-	if ( ch == '}' ) return '{' ;
+	else if ( ch == ']' ) return '[' ;
+	else if ( ch == '}' ) return '{' ;
 }
 
 int isempty ( int top )
 {
 	if ( top == -1 ) return 1 ;
-	else 			 return 0 ;
+	else		 return 0 ;
 }
 
 void push ( char A[] , int *top , char data ) 
