@@ -13,73 +13,98 @@ struct stack {
 stack A[100] ;
 int top = -1 ;
 
-extern double evaluator ( char expr[] )
+int getOperand ( char expr[] , int &from ){
+    int operandValue = 0 ;
+
+    while ( isdigit(expr[from]) ){
+        if ( (expr[from] >= 48 && expr[from] <= 57) ){
+            operandValue = ( operandValue *10 ) + ( (int)(expr[from]) - 48 ) ;
+        }
+        ++from ;
+    }
+    --from ;
+    return operandValue ;
+}
+
+bool isOperator ( char opr ){
+    return (( opr == '+' ) || ( opr == '-' ) || ( opr == '*' ) || ( opr == '/' ))?true:false ;
+}
+
+int setOpCode ( char opr ){
+    if ( opr == '+' )
+        return 1 ;
+    else if ( opr == '-' )
+        return 2 ;
+    else if ( opr == '*' )
+        return 3 ;
+    else if ( opr == '/' )
+        return 4 ;
+    else
+        return -1 ;
+}
+
+double performOperation ( int operand1 , int operand2 , int opcode ){
+    // cout << "Operand 1 = " << operand1 << endl ;
+    // cout << "Operand 2 = " << operand2 << endl ;
+    // cout << "Opcode = " << opcode << endl ;
+
+    double result = 0 ;
+    if ( opcode == 1 ){
+        result = operand1 + operand2 ;
+    } else if ( opcode == 2 ){
+        result = operand1 - operand2 ;
+    } else if ( opcode == 3 ){
+        result = operand1 * operand2 ;
+    } else if ( opcode == 4 ){
+        result = operand1 / operand2 ;
+    }
+
+    // cout << "Returning Result = " << result << endl ;
+    return result ;
+}
+
+extern double evaluator ( char expr[] , int &from )
 {
     double result = 0 ,  temp = 0 ;
     int i = 0 , opcode = 0 , dec = -1 , j = 0 , ten = 1 ;
-
-    while ( expr[i] != '\0' ){
-        if ( (expr[i] >= 48 && expr[i] <= 57) ){
-            if ( dec != -1 ) {  ++dec ; }
-            temp = ( temp *10 ) + ( (int)(expr[i]) - 48 ) ;
-        } else if ( expr[i] == '.' ){
-            dec = 0 ;
-        } else if ( expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/' ){
-            if ( dec != -1 ){
-                ten = 1 ;
-                for ( j = 1 ; j <= dec ; ++j ){
-                    ten = ten*10 ;
-                }
-                temp /= ten ;
-                dec = -1 ; 
+    bool readOnce = false ;
+    ++from ;
+    while ( expr[from] != '\0' ){
+        // cout << "Now Taking " << expr[from] << endl ;
+        if ( expr[from] == '(' ){
+            if ( !opcode ){
+                result = evaluator ( expr , from ) ;
+            } else if ( opcode == 1 ){
+                result += evaluator ( expr , from ) ;
+            } else if ( opcode == 2 ){
+                result -= evaluator ( expr , from ) ;
+            } else if ( opcode == 3 ){
+                result *= evaluator ( expr , from ) ;
+            } else if ( opcode == 4 ){
+                result /= evaluator ( expr , from ) ;
             }
-            
-            if ( !result && opcode != 2 ){
+        } else if ( isdigit(expr[from]) ){
+            temp = getOperand ( expr , from ) ;
+            // cout << "Operand Value  =   " << temp << endl ;
+            // cout << "i = " << from << endl ;
+            if ( !result && !readOnce ){
+                // cout << "resetting result" << endl ;
                 result = temp ;
-            } else {
-					 if ( opcode == 1 ) result += temp ;
-                else if ( opcode == 2 ) result -= temp ;
-                else if ( opcode == 3 ) result *= temp ;
-                else if ( opcode == 4 ) result /= temp ;
+                readOnce = true ;
             }
-
-            temp = 0 ;
-            if ( expr [i] == '+' ) opcode = 1 ;
-            else if ( expr [i] == '-' ) opcode = 2 ;
-            else if ( expr [i] == '*' ) opcode = 3 ;
-            else if ( expr [i] == '/' ) opcode = 4 ;
-
-        } else if ( expr[i] == '(' ){
-            if ( i && result ){
-                A[++top].operand = result ;
-                A[top].opcode = opcode ;
-                result = temp = opcode = 0 ;
+            if ( opcode ){
+                readOnce = true ;
+                result = performOperation ( result , temp , opcode ) ;
             }
-        } else if ( expr[i] == ')' ){
-                if ( dec != -1 ) {
-                    ten = 1 ;
-                    for ( j = 1 ; j <= dec ; ++j ){
-                        ten = ten*10 ;
-                    }
-                    temp /= ten ;
-                    dec = 0 ; 
-                }
-                if ( opcode == 1 ) result += temp ;
-                else if ( opcode == 2 ) result -= temp ;
-                else if ( opcode == 3 ) result = result * temp ;
-                else if ( opcode == 4 ) result /= temp ;
-                opcode = 0 ;
-
-            if ( top != -1 ){
-                if ( A[top].opcode == 1 ) result += A[top--].operand ;
-				else if ( A[top].opcode == 2 ) result = A[top--].operand - result ;
-                else if ( A[top].opcode == 3 ) result *= A[top--].operand ;
-                else if ( A[top].opcode == 4 ) result = A[top--].operand / result ;
-            }
-            if ( !result ) result = temp ;
-            temp = 0 ;
+        } else if ( isOperator(expr[from]) ){
+            opcode = setOpCode ( expr[from] ) ;
+            // cout << "operator code  =   " << opcode << endl ;
+        } else if ( expr[from] == ')' ){
+            // cout << "Returning " << result << endl ;
+            return result ;
         }
-        ++i ;
+        ++from ;
     }
+
     return result ;
 }

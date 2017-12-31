@@ -61,7 +61,7 @@ extern double exponent_enlongator ( char expr[] ){
 					++j ;
 				}
 				base[k] = '\0' ;
-				cout << "Base = " << base << endl ;
+				// cout << "Base = " << base << endl ;
 				//start = j ;
 
 			} else {
@@ -81,11 +81,16 @@ extern double exponent_enlongator ( char expr[] ){
 
 			--raisePower ;
 			// cout << "New Power = " << raisePower << endl ;
-
-			for ( j = 1 ; j <= raisePower ; ++j ){
-				// cout << "Here" << endl ;
-				strcat ( temp , "*" ) ;
-				strcat ( temp , base ) ;
+			if ( raisePower == -1 ){
+				strcat ( temp , "*0+1" ) ;
+			} else if ( raisePower == 0 ){
+				strcat ( temp , "*1" ) ;
+			} else {
+				for ( j = 1 ; j <= raisePower ; ++j ){
+					// cout << "Here" << endl ;
+					strcat ( temp , "*" ) ;
+					strcat ( temp , base ) ;
+				}
 			}
 			indexForTemp = strlen(temp) ;
 			i = power_end-1 ;
@@ -93,6 +98,6 @@ extern double exponent_enlongator ( char expr[] ){
 		++i ;
 	}
 
-	cout << "DONE ----------   " << temp << endl ;
+	// cout << "DONE ----------   " << temp << endl ;
 	strcpy ( expr , temp ) ;
 }

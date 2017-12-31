@@ -9,7 +9,8 @@ using namespace std ;
 extern int para_match_test ( char expr[] ) ;
 extern void space_remove ( char expr [] ) ;
 extern void  zero_plus_prepender ( char expr [] );
-extern double  evaluator ( char expr [] );
+// extern double  evaluator ( char expr [] );
+extern double  evaluator ( char expr [] , int& from );
 extern double  exponent_enlongator ( char expr [] );
 
 void main ()
@@ -27,7 +28,7 @@ void main ()
 		itoa ( result , cresult , 10 ) ;
 
 		//Enclosing The Entire Expression In ( )
-		if ( expr[0] == '+' || expr[0] == '-' || expr[0] == '/' || expr[0] == '*'  )
+		if ( expr[0] == '+' || expr[0] == '-' || expr[0] == '/' || expr[0] == '*' || expr[0] == '^'  )
 		{
 			strcpy ( temp , "(" );
 			strcat ( temp , cresult ) ;
@@ -39,19 +40,21 @@ void main ()
 		strcat ( temp , ")" ) ;
 		strcpy ( expr , temp ) ;
 
-		space_remove ( expr ) ;
-
 		if ( ! para_match_test ( expr ) )
 		{
 			cout<<endl<<"!! SORRY !! THE EXPRESSION IS INVALID !!" ;
 			getchar () ;
 		}
+		space_remove ( expr ) ;
+
 		
 		exponent_enlongator ( expr ) ;
 
-		zero_plus_prepender ( expr ) ;
+		// zero_plus_prepender ( expr ) ;
 
-		result = evaluator ( expr ) ;
+		int i = -1 ;
+		
+		result = evaluator ( expr , i )  ;
 
 		cout << endl << " >> The Result = " << result ;
 	}while (1) ;
