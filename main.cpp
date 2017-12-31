@@ -8,8 +8,6 @@ using namespace std ;
 
 extern int para_match_test ( char expr[] ) ;
 extern void space_remove ( char expr [] ) ;
-extern void  zero_plus_prepender ( char expr [] );
-// extern double  evaluator ( char expr [] );
 extern double  evaluator ( char expr [] , int& from );
 extern double  exponent_enlongator ( char expr [] );
 
@@ -49,8 +47,6 @@ void main ()
 
 		
 		exponent_enlongator ( expr ) ;
-
-		// zero_plus_prepender ( expr ) ;
 
 		int i = -1 ;
 		

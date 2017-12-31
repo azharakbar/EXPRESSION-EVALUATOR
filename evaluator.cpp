@@ -44,9 +44,6 @@ int setOpCode ( char opr ){
 }
 
 double performOperation ( int operand1 , int operand2 , int opcode ){
-    // cout << "Operand 1 = " << operand1 << endl ;
-    // cout << "Operand 2 = " << operand2 << endl ;
-    // cout << "Opcode = " << opcode << endl ;
 
     double result = 0 ;
     if ( opcode == 1 ){
@@ -59,7 +56,6 @@ double performOperation ( int operand1 , int operand2 , int opcode ){
         result = operand1 / operand2 ;
     }
 
-    // cout << "Returning Result = " << result << endl ;
     return result ;
 }
 
@@ -70,7 +66,6 @@ extern double evaluator ( char expr[] , int &from )
     bool readOnce = false ;
     ++from ;
     while ( expr[from] != '\0' ){
-        // cout << "Now Taking " << expr[from] << endl ;
         if ( expr[from] == '(' ){
             if ( !opcode ){
                 result = evaluator ( expr , from ) ;
@@ -85,10 +80,7 @@ extern double evaluator ( char expr[] , int &from )
             }
         } else if ( isdigit(expr[from]) ){
             temp = getOperand ( expr , from ) ;
-            // cout << "Operand Value  =   " << temp << endl ;
-            // cout << "i = " << from << endl ;
             if ( !result && !readOnce ){
-                // cout << "resetting result" << endl ;
                 result = temp ;
                 readOnce = true ;
             }
@@ -98,9 +90,7 @@ extern double evaluator ( char expr[] , int &from )
             }
         } else if ( isOperator(expr[from]) ){
             opcode = setOpCode ( expr[from] ) ;
-            // cout << "operator code  =   " << opcode << endl ;
         } else if ( expr[from] == ')' ){
-            // cout << "Returning " << result << endl ;
             return result ;
         }
         ++from ;

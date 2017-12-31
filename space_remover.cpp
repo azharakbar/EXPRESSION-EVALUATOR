@@ -4,21 +4,6 @@
 
 using namespace std ;
 
-extern void zero_plus_prepender ( char expr [] ){
-	char temp[100] = "" ;
-	int i = 0 , j = 0 ;
-	for ( i = 0 ; expr[i] != '\0' ; ++i ){
-		temp[j++] = expr[i] ;
-		if ( i && expr[i] == '('){
-			temp[j++] = '0' ;
-			temp[j++] = '+' ;
-		}
-	}
-	temp[j] = '\0' ;
-	
-	strcpy ( expr , temp ) ;	
-}
-
 extern void space_remove ( char expr [] )
 {
 	int i = 0 , j = 0 ;
